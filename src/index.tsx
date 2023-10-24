@@ -1,16 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+// import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import { IntlProvider } from 'react-intl';
+import { AxiosInterceptor } from './app/core/interceptor/global-http-interceptor';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2397c7',
+    },
+  },
+
+})
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={store}>
+    {/* <IntlProvider locale='en_US'> */}
+    {/* <ThemeProvider theme={theme}> */}
+    <BrowserRouter>
+      <AxiosInterceptor>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </AxiosInterceptor>
+    </BrowserRouter>
+    {/* </ThemeProvider> */}
+    {/* </IntlProvider> */}
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

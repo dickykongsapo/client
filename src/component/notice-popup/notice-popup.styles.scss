@@ -1,0 +1,20 @@
+.notice-popup {
+    width: 375px;
+    // height: 665px;
+    flex-grow: 0;
+    padding: 33px 22px 27px 18px;
+    box-shadow: 1px 1px 8px 0 rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+    overflow-x: auto;
+
+    @media all and (max-width: 414px) {
+        width: 100%;
+    }
+
+    .notice-popup-section {
+        border: 1px solid;
+        border-radius: 10px;
+        border-color: aqua;
+        margin: 5px;
+    }
+}
