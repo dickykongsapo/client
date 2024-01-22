@@ -17,15 +17,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Paper } from '@mui/material';
 import TextField from '@mui/material';
 import './account-popup.styles.scss';
-import { NoticeMessage } from '../../models/notice-message.models';
 import { selectAuthState, selectAuthUser } from 'src/app/core/auth/auth.selectors';
 import { useStore } from 'react-redux';
 import { AppState } from 'src/app/core/core.state';
-import { AuthState } from 'src/app/core/auth/auth.models';
 import { Store } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
 import { AuthService } from 'src/services/auth.service';
-import ThemedButton from '../button/button.component';
+import ThemedButton from 'src/components/button/button.component';
+
 
 
 const AccountPopup = (props: { handleAccountPopupClose: () => void }

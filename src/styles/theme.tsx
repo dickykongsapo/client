@@ -4,6 +4,8 @@ import { connect, useStore } from "react-redux";
 
 const GlobalTheme = (props) => {
     const { colorMode, whiteLabelColor } = props
+    console.log(colorMode)
+
     return <ThemeProvider
         theme={
             createTheme({

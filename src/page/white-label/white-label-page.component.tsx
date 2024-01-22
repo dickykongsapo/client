@@ -1,6 +1,6 @@
 import React from 'react';
-import SignInForm from 'src/component/sign-in-form/sign-in-form.component';
-import WhiteLabelForm from 'src/component/white-label-form/white-label-form.component';
+import SignInForm from 'src/components/sign-in-form/sign-in-form.component';
+import WhiteLabelForm from 'src/components/white-label-form/white-label-form.component';
 
 import './white-label-page.styles.scss';
 

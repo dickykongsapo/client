@@ -3,7 +3,7 @@ import { blue, purple } from "@mui/material/colors";
 import { Store } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react"
 import { connect, useStore } from "react-redux";
-import { AppState } from "src/app/core/core.state";
+import { AppState } from "@app/core/core.state";
 
 
 
@@ -23,12 +23,13 @@ export const ThemeProviderCustomized = (props) => {
 
 const GlobalStyle = (props) => {
     const { color } = props
+    console.log(props)
     return <GlobalStyles
         styles={{
             '.mui-header': { backgroundColor: color ? color : '#2397c5' },
             '.mui-button': {
                 backgroundColor: color ? `${color} !important` : '#2397c5 !important',
-                color: 'white !important',
+                // color: 'white !important',
                 '&.reset': {
                     backgroundColor: 'transparent !important',
                     color: color ? `${color} !important` : '#2397c5 !important',

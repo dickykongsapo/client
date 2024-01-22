@@ -22,12 +22,11 @@ import { ListItem, ListItemIcon, ListItemText, Popover } from '@mui/material';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { AccountCircle, Brightness4, Brightness7, DarkMode, Fullscreen, Home, LightMode, More, MoreVert, SettingsEthernet, SupervisorAccount } from '@mui/icons-material';
 import { blue, green, purple } from '@mui/material/colors';
-import { MENU_LIST } from './menu-list';
-import NoticePopup from '../notice-popup/notice-popup.component';
-import AccountPopup from '../account-popup/account-popup.component';
+import { MENU_LIST } from 'src/components/header/menu-list';
+import NoticePopup from 'src/components/notice-popup/notice-popup.component';
+import AccountPopup from 'src/components/account-popup/account-popup.component';
 import store from 'src/store';
-import { WhiteLabel } from 'src/models/white-label.model';
-import './header.component.scss'
+import './header.styles.scss'
 import { ActionSettingsChangeColorMode } from 'src/app/core/settings/settings.actions';
 import { connect, useDispatch } from 'react-redux';
 

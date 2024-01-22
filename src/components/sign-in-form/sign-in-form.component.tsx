@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/auth.service';
 import { ToastContainer, toast } from 'react-toastify';
 import ThemedButton from '../button/button.component';
-
 // import { useDispatch } from 'react-redux';
 const defaultFormFields = {
     email: '',
@@ -107,7 +106,6 @@ const SignInForm = () => {
             <form onSubmit={handleSubmit} onReset={handleReset}>
 
                 {/* <button onClick={notify}>Notify!</button> */}
-                <ToastContainer />
 
                 <FormInput
                     label='Email'

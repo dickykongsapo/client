@@ -138,17 +138,31 @@ export class AuthService {
   }
 
 
-  public reloadUser() {
-    this.loadUser(true).subscribe(
-      (authPayload) => {
-        this.notifyAuthenticated(authPayload);
-        this.notifyUserLoaded(true);
-      },
-      () => {
-        this.notifyUnauthenticated();
-        this.notifyUserLoaded(true);
-      }
-    );
+  public async reloadUser() {
+    const authPayload = await this.loadUser(true).toPromise();
+    console.log(authPayload)
+    if (authPayload) {
+      this.notifyAuthenticated(authPayload);
+      this.notifyUserLoaded(true);
+      console.log('start1')
+    } else {
+      this.notifyUnauthenticated();
+      this.notifyUserLoaded(true);
+      console.log('start2')
+    }
+
+    // this.loadUser(true).subscribe(
+    //   (authPayload) => {
+    //     this.notifyAuthenticated(authPayload);
+    //     this.notifyUserLoaded(true);
+    //     console.log('start1')
+    //   },
+    //   () => {
+    //     this.notifyUnauthenticated();
+    //     this.notifyUserLoaded(true);
+    //     console.log('start2')
+    //   }
+    // );
   }
 
   readonly notifyUserLoaded = (isUserLoaded: boolean) => {
@@ -214,7 +228,7 @@ export class AuthService {
   }
 
   //redux
-  private loadUser = (doTokenRefresh: boolean): Observable<AuthPayload> => {
+  public loadUser = (doTokenRefresh: boolean): Observable<AuthPayload> => {
 
     const authUser = getCurrentAuthUser(this.store);
     if (!authUser) {
@@ -251,6 +265,7 @@ export class AuthService {
             localStorage.removeItem('refresh_token_expiration');
           }
         } catch (e) {
+
           return throwError(e);
         }
         return this.procceedJwtTokenValidate();
@@ -261,6 +276,7 @@ export class AuthService {
           username,
           password
         };
+
         return from(axiosInstance.post<LoginResponse>('/api/auth/login', loginRequest, defaultHttpOptions())).pipe(
           map(axiosResponse => {
             return axiosResponse.data
@@ -278,8 +294,10 @@ export class AuthService {
         this.utilsService.updateQueryParam('loginError', null);
         return throwError(Error());
       }
+
       return this.procceedJwtTokenValidate(doTokenRefresh);
     } else {
+      console.log('no')
       return of({} as AuthPayload);
     }
   }
@@ -465,6 +483,7 @@ export class AuthService {
         }
       },
       (err) => {
+
         loadUserSubject.error(err);
       }
     );

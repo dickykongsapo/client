@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,6 +10,7 @@ import store from './store';
 import { IntlProvider } from 'react-intl';
 import { AxiosInterceptor } from './app/core/interceptor/global-http-interceptor';
 import { createTheme, ThemeProvider } from '@mui/material';
+// require('module-alias/register')
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

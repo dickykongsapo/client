@@ -2,35 +2,20 @@ import { Store } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { Navigate, Route, useNavigate } from 'react-router-dom';
-import { connect } from 'rxjs';
+import { connect, defer } from 'rxjs';
 import LogInPage from 'src/page/sign-in/sign-in-page.component';
 import { AuthService } from 'src/services/auth.service';
 import { AppState } from '../core.state';
 
 export const ProtectedRoute = ({ children }) => {
-    const authService = new AuthService()
-
     const store: Store<AppState> = useStore();
     const state: AppState = store.getState();
-    const [isAuthenticated, setIsAuthenticated] = useState(state.auth.isAuthenticated)
-    console.log(isAuthenticated)
+    const isAuthenticated = state.auth.isAuthenticated
     useEffect(() => {
-        console.log(`ThingsBoard Version`);
-        const jwtToken = localStorage.getItem('jwt_token')
+        console.log(isAuthenticated)
 
-        const fetchData = async () => {
-            await authService.reloadUser()
-            setIsAuthenticated(true)
-            console.log(store.getState())
-        }
-        fetchData();
-        // if (jwtToken) {
-        //   fetchData();
-        //   console.log(store.getState())
-
-        // }
     }, [])
-    if (!state.auth.isAuthenticated) {
+    if (!isAuthenticated) {
         return (
             <Navigate to="/login" />
         )
@@ -38,3 +23,15 @@ export const ProtectedRoute = ({ children }) => {
     return children;
 };
 
+
+
+// const mapStateToProps = (state, props) => {
+//     console.log(state)
+//     console.log(props)
+//     return {
+//         isAuthenticated: state.auth.isAuthenticated,
+//         children: props.children
+//     }
+// }
+
+// export default connect(mapStateToProps)(ProtectedRoute)

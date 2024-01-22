@@ -1,7 +1,40 @@
 {
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [ // set this so you dont need to use ts-node -r 
+      "typescript-transform-paths/register",
+      "tsconfig-paths/register"
+    ]
+  },
   "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": "./", // must define
     "baseUrl": "./",
+    "paths": {
+      // "@/*": [
+      //   "src/*"
+      // ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@models/*": [
+        "src/models/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@services/*": [
+        "src/services/*"
+      ],
+    },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ],
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -12,7 +45,7 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "es5",
-    "jsx": "react-jsx",    
+    "jsx": "react-jsx",
     "typeRoots": [
       "node_modules/@types",
       "src/typings/rawloader.typings.d.ts",
@@ -38,13 +71,11 @@
     "resolveJsonModule": true,
     // "isolatedModules": true,
     "noEmit": true,
-
     "lib": [
       "es2018",
       "es2019",
       "dom"
     ],
-    
   },
   "typeRoots": [
     "node_modules/@types",
@@ -57,14 +88,17 @@
     "src/typings/leaflet-editable.d.ts"
   ],
   "paths": {
-    "crypto": ["node_modules/crypto-browserify"],
-    "stream": ["node_modules/stream-browserify"]
+    "crypto": [
+      "node_modules/crypto-browserify"
+    ],
+    "stream": [
+      "node_modules/stream-browserify"
+    ]
   },
   "include": [
     "src"
-  ]
+  ],
 }
-
 // {
 //   "compileOnSave": false,
 //   "compilerOptions": {
