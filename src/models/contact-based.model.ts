@@ -14,7 +14,7 @@
 /// limitations under the License.
 ///
 
-import { BaseData, HasId } from './base-data';
+import { BaseData, HasId } from '@models/base-data';
 
 export interface ContactBased<T extends HasId> extends BaseData<T> {
     country: string;

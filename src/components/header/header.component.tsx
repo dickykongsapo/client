@@ -1,34 +1,44 @@
+/*
+ * Copyright © 2016-2021 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { styled, createTheme, ThemeProvider, withStyles, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { KeyboardEventHandler, MouseEventHandler, useCallback, useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Drawer from '@mui/material/Drawer';
-import { ListItem, ListItemIcon, ListItemText, Popover } from '@mui/material';
+import { ListItem, ListItemIcon, ListItemText, MenuItem, Popover, Select } from '@mui/material';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { AccountCircle, Brightness4, Brightness7, DarkMode, Fullscreen, Home, LightMode, More, MoreVert, SettingsEthernet, SupervisorAccount } from '@mui/icons-material';
-import { blue, green, purple } from '@mui/material/colors';
-import { MENU_LIST } from 'src/components/header/menu-list';
-import NoticePopup from 'src/components/notice-popup/notice-popup.component';
-import AccountPopup from 'src/components/account-popup/account-popup.component';
-import store from 'src/store';
-import './header.styles.scss'
-import { ActionSettingsChangeColorMode } from 'src/app/core/settings/settings.actions';
+import { MENU_LIST } from '@components/header/menu-list';
+import NoticePopup from '@components/notice-popup/notice-popup.component';
+import AccountPopup from '@components/account-popup/account-popup.component';
+import store from '@store/store';
+import '@components/header/header.styles.scss'
+import { ActionSettingsChangeColorMode, ActionSettingsChangeLanguage } from '@app/core/settings/settings.actions';
 import { connect, useDispatch } from 'react-redux';
+import { sampleLanguages } from '@models/translate.model';
+import { useTranslation } from 'react-i18next';
+import { red } from '@mui/material/colors';
 
 // import AppBar from '@mui/material/AppBar';
 
@@ -40,7 +50,7 @@ const IconSwitch = (menuItem: any) => {
     return menuItem.icon
 }
 
-const MenuLink = (toggleDrawer: any) => (
+const MenuLink = (toggleDrawer: any, t) => (
     <div>
         <Box
             sx={{ width: 250 }}
@@ -51,11 +61,13 @@ const MenuLink = (toggleDrawer: any) => (
             <List>
                 {MENU_LIST.map(menuItem => {
                     return (
+
                         <ListItem key={menuItem.id} component={Link} to={menuItem.link} >
                             <ListItemIcon>
                                 {IconSwitch(menuItem)}
                             </ListItemIcon>
-                            <ListItemText primary={menuItem.name} />
+
+                            <ListItemText primary={t(menuItem.name)} />
                         </ListItem>
                     )
                 })}
@@ -66,15 +78,18 @@ const MenuLink = (toggleDrawer: any) => (
 );
 
 const Header = (props) => {
-    const { colorMode } = props;
+    const { colorMode, userLang } = props;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { t, i18n } = useTranslation();
 
     const [openMenuDrawer, setOpenMenuDrawer] = useState(false);
     const [openNoticePopup, setOpenNoticePopup] = useState<HTMLElement>();
     const [openAccountPopup, setOpenAccountPopup] = useState<HTMLElement>();
 
     const isAuthenticated = store.getState().auth.isAuthenticated;
+    // const [userLang, setUserLang] = useState(i18n.language)
+    // const userLang = store.getState().settings.userLang;
     const theme = useTheme();
 
     // const whiteLabel = store.getState().whiteLabel.whiteLabel;
@@ -96,7 +111,6 @@ const Header = (props) => {
     // }, [whiteLabel])
 
     useEffect(() => {
-        console.log(store.getState())
         setOpenAccountPopup(null)
     }, [isAuthenticated])
 
@@ -106,11 +120,10 @@ const Header = (props) => {
         setOpenMenuDrawer(!openMenuDrawer);
     };
 
-    const navigateTo = (path: any) => {
-        navigate(path)
+    const handleChangeLang = (event) => {
+        dispatch(ActionSettingsChangeLanguage(event.target.value))
+        i18n.changeLanguage(event.target.value);
     }
-
-
 
     // const handleNoticePopupOpen = (e: React.MouseEvent<HTMLElement>) => {
     //     console.log(e)
@@ -134,7 +147,6 @@ const Header = (props) => {
     const handleAccountPopupClose = useCallback(() => {
         setOpenAccountPopup(undefined)
     }, [])
-
 
     const toggleColorMode = () => {
 
@@ -169,8 +181,36 @@ const Header = (props) => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard
+                        {t('dashboard.dashboard')}
                     </Typography>
+                    <Select
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        value={userLang ? userLang : 'en_US'}
+                        name='lang'
+                        onChange={handleChangeLang}
+                        sx={{
+                            color: 'inherit',
+                            border: 'none',
+                            ".MuiOutlinedInput-notchedOutline": {
+                                border: 'none'
+                            }
+                        }}
+                    >
+
+                        {sampleLanguages.map((sampleLanguage, key) =>
+                            <MenuItem
+                                value={sampleLanguage}
+                                key={key}
+                                sx={{
+                                    height: 50
+                                }}>
+                                {t(`language.locales.${sampleLanguage}`)}
+
+                            </MenuItem>
+
+                        )}
+                    </Select>
                     <IconButton sx={{ ml: 1 }} color="inherit" onClick={toggleColorMode}>
                         {colorMode === 'dark' ? <DarkMode /> : <LightMode />}
                     </IconButton>
@@ -215,7 +255,7 @@ const Header = (props) => {
                         onClick={toggleMenuDrawer}
                         onKeyDown={toggleMenuDrawer}
                     >
-                        {MenuLink(toggleMenuDrawer)}
+                        {MenuLink(toggleMenuDrawer, t)}
                     </Box></div>
             </Drawer>
             <Popover
@@ -270,7 +310,8 @@ const Header = (props) => {
 const mapStateToProps = (state) => {
 
     return {
-        colorMode: state.settings.colorMode
+        colorMode: state.settings.colorMode,
+        userLang: state.settings.userLang
     }
 }
 

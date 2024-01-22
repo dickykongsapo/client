@@ -15,7 +15,7 @@
 ///
 
 import { Action } from "../action";
-import { WhiteLabel } from "src/models/white-label.model";
+import { WhiteLabel } from "@models/white-label.model";
 
 export enum WhiteLabelActionTypes {
     LOAD_WHITE_LABEL = '[WhiteLabel] Load White Label',

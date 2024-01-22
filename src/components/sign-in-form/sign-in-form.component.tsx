@@ -1,11 +1,26 @@
+/*
+ * Copyright © 2016-2021 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { useState } from 'react';
-import FormInput from '../form-input/form-input.component';
-import { Button } from '@mui/material';
-import './sign-in-form.styles.scss';
+import FormInput from '@components/form-input/form-input.component';
+import '@components/sign-in-form/sign-in-form.styles.scss';
 import { useNavigate } from 'react-router-dom';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@app/core/services/auth.service';
 import { ToastContainer, toast } from 'react-toastify';
-import ThemedButton from '../button/button.component';
+import ThemedButton from '@components/button/button.component';
+import { useTranslation } from 'react-i18next';
 // import { useDispatch } from 'react-redux';
 const defaultFormFields = {
     email: '',
@@ -16,6 +31,8 @@ const SignInForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
     const [errorMessage, setErrorMessage] = useState('')
+    const { t, i18n } = useTranslation();
+
     const notify = (message: string) => toast.warn(message);
 
     // const dispatch = useDispatch();
@@ -108,7 +125,7 @@ const SignInForm = () => {
                 {/* <button onClick={notify}>Notify!</button> */}
 
                 <FormInput
-                    label='Email'
+                    label={t('login.username')}
                     type='email'
                     required
                     onChange={handleChange}
@@ -117,7 +134,7 @@ const SignInForm = () => {
                 />
 
                 <FormInput
-                    label='Password'
+                    label={t('common.password')}
                     type='password'
                     required
                     onChange={handleChange}
@@ -125,8 +142,8 @@ const SignInForm = () => {
                     value={password}
                 />
                 <div className='buttons-container'>
-                    <ThemedButton type='submit' word='Sign In' />
-                    <ThemedButton type='reset' word='Reset' />
+                    <ThemedButton type='submit' word={t('user.login')} />
+                    <ThemedButton type='reset' word={t('user.reset')} />
                     {/* <Button type='submit'>Sign In</Button> */}
                 </div>
             </form>

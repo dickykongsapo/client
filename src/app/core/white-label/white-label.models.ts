@@ -14,8 +14,7 @@
 /// limitations under the License.
 ///
 
-import { WhiteLabel } from "../../../models/white-label.model"
-
+import { WhiteLabel } from "@models/white-label.model"
 export interface WhiteLabelState {
     whiteLabel: WhiteLabel
 }

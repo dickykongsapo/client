@@ -8,31 +8,50 @@
   },
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": "./", // must define
+    "rootDir": ".", // must define
     "baseUrl": "./",
     "paths": {
       // "@/*": [
-      //   "src/*"
+      //   "./src/*"
       // ],
       "@app/*": [
-        "src/app/*"
+        "./src/app/*"
       ],
       "@assets/*": [
-        "src/assets/*"
+        "./src/assets/*"
       ],
       "@models/*": [
-        "src/models/*"
+        "./src/models/*"
+      ],
+      "@pages/*": [
+        "./src/pages/*"
       ],
       "@components/*": [
-        "src/components/*"
+        "./src/components/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
       ],
       "@services/*": [
-        "src/services/*"
+        "src/app/core/services/*"
       ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@store/*": [
+        "./src/store/*"
+      ],
+      "@home/*": [
+        "./src/app/modules/home/*"
+      ]
     },
     "plugins": [
       {
         "transform": "typescript-transform-paths"
+      },
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
       }
     ],
     "outDir": "./dist/out-tsc",
@@ -61,16 +80,16 @@
     //   "dom.iterable",
     //   "esnext"
     // ],
-    "allowJs": true,
+    // "allowJs": true,
     // "checkJs": false,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    // "skipLibCheck": true,
+    // "esModuleInterop": true,
     // "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
+    // "forceConsistentCasingInFileNames": true,
+    // "noFallthroughCasesInSwitch": false,
+    // "resolveJsonModule": true,
     // "isolatedModules": true,
-    "noEmit": true,
+    // "noEmit": true,
     "lib": [
       "es2018",
       "es2019",
@@ -96,7 +115,7 @@
     ]
   },
   "include": [
-    "src"
+    "src/**/*"
   ],
 }
 // {

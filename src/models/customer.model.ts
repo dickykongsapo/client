@@ -14,9 +14,9 @@
 /// limitations under the License.
 ///
 
-import { CustomerId } from './id/customer-id';
-import { ContactBased } from './contact-based.model';
-import { TenantId } from './id/tenant-id';
+import { CustomerId } from '@models/id/customer-id';
+import { ContactBased } from '@models/contact-based.model';
+import { TenantId } from '@models/id/tenant-id';
 
 export interface Customer extends ContactBased<CustomerId> {
     tenantId: TenantId;

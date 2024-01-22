@@ -1,19 +1,21 @@
 import React, { LegacyRef, useEffect, useRef, useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import '@/App.css';
 import { Button, CircularProgress, createTheme, ThemeProvider } from '@mui/material';
-import Dashboard from './components/header/header.component';
+import Dashboard from '@components/header/header.component';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Header from './components/header/header.component';
-import HomePage from './page/home/home-page.component';
-import CustomersPage from './page/customers/customers-page.component';
-import RuleChainsPage from './page/ruleChains/ruleChains-page.component';
-import LogInPage from './page/sign-in/sign-in-page.component';
-import { ProtectedRoute } from './app/core/guards/auth.guard';
-import GlobalTheme from './styles/theme';
-import WhiteLabelPage from './page/white-label/white-label-page.component';
-import { AuthService } from './services/auth.service';
-// import { AuthService } from '@services/auth.service';
+import Header from '@components/header/header.component';
+import HomePage from '@pages/home/home-page.component';
+import CustomersPage from '@pages/customers/customers-page.component';
+import RuleChainsPage from '@pages/rule-chains/rule-chains-page.component';
+import LogInPage from '@pages/sign-in/sign-in-page.component';
+import { ProtectedRoute } from '@app/core/guards/auth.guard';
+import GlobalTheme from '@styles/theme';
+import WhiteLabelPage from '@pages/white-label/white-label-page.component';
+// import { AuthService } from './services/auth.service';
+// import { AuthService } from '@/services/auth.service';
+
+import { AuthService } from '@app/core/services/auth.service';
 import { connect, useStore } from "react-redux";
 import { ToastContainer } from 'react-toastify';
 import { deepClone, isDefined, isUndefined } from '@app/core/utils';
@@ -46,16 +48,21 @@ const App = () => {
     console.log(`ThingsBoard Version`);
     const jwtToken = localStorage.getItem('jwt_token')
     if (jwtToken) {
+      console.log(authService)
       authService.loadUser(true).subscribe(
         (authPayload) => {
           authService.notifyAuthenticated(authPayload);
           authService.notifyUserLoaded(true);
           setLoaded(true)
+          console.log(authService)
+
         },
         () => {
           authService.notifyUnauthenticated();
           authService.notifyUserLoaded(true);
           setLoaded(true)
+          console.log(authService)
+
         }
       );
 

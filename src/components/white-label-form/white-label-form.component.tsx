@@ -1,18 +1,34 @@
+/*
+ * Copyright © 2016-2021 The Thingsboard Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import { Box, Button, FormControl, FormControlLabel, FormHelperText, FormLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Store } from "@reduxjs/toolkit";
 import { useEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { AppState } from "src/app/core/core.state";
-import { ActionLoadWhiteLabel } from "src/app/core/white-label/white-label.actions";
-import { WhiteLabel } from "src/models/white-label.model";
-import { WhiteLabelService } from "src/services/white-label.service";
-import FormInput from "../form-input/form-input.component";
+import { AppState } from "@app/core/core.state";
+import { ActionLoadWhiteLabel } from "@app/core/white-label/white-label.actions";
+import { WhiteLabel } from "@models/white-label.model";
+import { WhiteLabelService } from "@app/core/services/white-label.service";
+import FormInput from "@components/form-input/form-input.component";
 import * as Yup from 'yup';
-import './white-label-form.styles.scss'
+import '@components/white-label-form/white-label-form.styles.scss'
 import { Formik, Form as FormikForm, Field, useFormik } from "formik";
-import ImageInput from "../image-input/image-input.component";
-import { sampleColors } from "src/assets/sample-color";
+import ImageInput from "@components/image-input/image-input.component";
+import { sampleColors } from "@assets/sample-color";
+import { useTranslation } from "react-i18next";
 
 const defaultFormFields = {
     title: '',
@@ -31,6 +47,7 @@ const WhiteLabelForm = () => {
     const authUser = store.getState().auth.authUser
     const whiteLabel = store.getState().whiteLabel.whiteLabel
     const notify = (message: string) => toast.success(message);
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         if (whiteLabel) {
@@ -77,7 +94,7 @@ const WhiteLabelForm = () => {
 
                     dispatch(ActionLoadWhiteLabel(whiteLabel))
                     setFormFields(values)
-                    notify('succeed')
+                    notify(t('event.success'))
 
                 }
                 )
@@ -116,7 +133,7 @@ const WhiteLabelForm = () => {
                     fullWidth
                     id="title"
                     name="title"
-                    label='Application Title'
+                    label={t('white-labeling.application-title')}
                     value={formik.values.title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -124,7 +141,7 @@ const WhiteLabelForm = () => {
                     helperText={formik.touched.title && formik.errors.title}
                 />
                 <FormInput
-                    label='Height'
+                    label={t('white-labeling.logo-height')}
                     type='number'
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -146,10 +163,10 @@ const WhiteLabelForm = () => {
                     <FormLabel
                         sx={{
                             fontSize: '12px'
-                        }}>Icon</FormLabel>
+                        }}>{t('white-labeling.website-icon')}</FormLabel>
 
                     <ImageInput setFieldValue={formik.setFieldValue} onBlur={formik.handleBlur}
-                        instruction='Drop a website icon image or click to select a file to upload.'
+                        instruction={t('white-labeling.drop-icon-image')}
                         size={256000}
                         name={'icon'} value={formik.values.icon} />
                 </FormControl>
@@ -160,10 +177,10 @@ const WhiteLabelForm = () => {
                     <FormLabel
                         sx={{
                             fontSize: '12px'
-                        }}>Logo</FormLabel>
+                        }}>{t('white-labeling.logo')}</FormLabel>
 
                     <ImageInput setFieldValue={formik.setFieldValue} onBlur={formik.handleBlur}
-                        instruction='Drop a logo image or click to select a file to upload.'
+                        instruction={t('white-labeling.drop-logo-image')}
                         size={4000000}
 
                         name={'logo'} value={formik.values.logo} />
@@ -175,7 +192,7 @@ const WhiteLabelForm = () => {
                     <FormLabel
                         sx={{
                             fontSize: '12px'
-                        }}>Color</FormLabel>
+                        }}>{t('white-labeling.theme-color')}</FormLabel>
 
 
                     <Select
@@ -195,7 +212,7 @@ const WhiteLabelForm = () => {
                                 key={key}
                                 sx={{
                                     backgroundColor: sampleColor.color,
-                                    color: 'contrast',
+                                    color: 'inherit',
                                     "&.MuiMenuItem-root:hover": {
                                         backgroundColor: sampleColor.color
                                     },
@@ -213,13 +230,13 @@ const WhiteLabelForm = () => {
                 </FormControl>
 
                 <Button variant="contained" fullWidth type="submit" disabled={!formik.isValid}>
-                    Submit
+                    {t('action.save')}
                 </Button>
                 <Button variant="outlined" fullWidth type="reset">
-                    Reset
+                    {t('action.discard-changes')}
                 </Button>
                 <Button variant="outlined" fullWidth onClick={handleClick}>
-                    Delete
+                    {t('action.delete')}
                 </Button>
             </form>
 

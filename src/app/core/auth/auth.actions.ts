@@ -16,9 +16,11 @@
 
 // import { Action } from '@ngrx/store';
 import { Action } from '../action';
-import { User } from '../../../models/user.model';
+import { User } from '@models/user.model';
 import { AuthPayload } from './auth.models';
 import { createAction } from '@reduxjs/toolkit';
+
+
 
 export enum AuthActionTypes {
     AUTHENTICATED = '[Auth] Authenticated',

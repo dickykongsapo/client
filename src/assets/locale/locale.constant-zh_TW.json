@@ -1,4 +1,5 @@
 {
+    "hello": "你好!",
     "access": {
         "unauthorized": "未授權",
         "unauthorized-access": "未授權存取",
@@ -2629,7 +2630,11 @@
         "demote-to-customer-user": "降級為客戶用戶",
         "demote-to-customer-user-message": "用戶帳戶已成功降級為客戶用戶",
         "promote-to-customer-admin": "升級為客戶管理員",
-        "promote-to-customer-admin-message": "用戶帳戶已成功升級為客戶管理員"
+        "promote-to-customer-admin-message": "用戶帳戶已成功升級為客戶管理員",
+        "not-logged-in": "閣下未登入!",
+        "login": "登入",
+        "logout": "登出",
+        "reset": "重設"
     },
     "value": {
         "type": "值類型",

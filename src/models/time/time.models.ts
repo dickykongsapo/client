@@ -14,9 +14,8 @@
 /// limitations under the License.
 ///
 
-// import { TimeService } from '@core/services/time.service';
-// import { deepclone, isDefined, isUndefined } from '@app/core/utils';
-import * as moment_ from 'moment';
+import { TimeService } from '@app/core/services/time.service';
+import moment_ from 'moment';
 import * as momentTz from 'moment-timezone';
 import { deepClone, isDefined, isUndefined } from '@app/core/utils';
 const moment = moment_;
@@ -183,37 +182,37 @@ export function historyInterval(timewindowMs: number): Timewindow {
     };
 }
 
-// export function defaultTimewindow(timeService: TimeService): Timewindow {
-//   const currentTime = moment().valueOf();
-//   return {
-//     displayValue: '',
-//     hideInterval: false,
-//     hideAggregation: false,
-//     hideAggInterval: false,
-//     hideTimezone: false,
-//     selectedTab: TimewindowType.REALTIME,
-//     realtime: {
-//       realtimeType: RealtimeWindowType.LAST_INTERVAL,
-//       interval: SECOND,
-//       timewindowMs: MINUTE,
-//       quickInterval: QuickTimeInterval.CURRENT_DAY
-//     },
-//     history: {
-//       historyType: HistoryWindowType.LAST_INTERVAL,
-//       interval: SECOND,
-//       timewindowMs: MINUTE,
-//       fixedTimewindow: {
-//         startTimeMs: currentTime - DAY,
-//         endTimeMs: currentTime
-//       },
-//       quickInterval: QuickTimeInterval.CURRENT_DAY
-//     },
-//     aggregation: {
-//       type: AggregationType.NONE,
-//       limit: Math.floor(timeService.getMaxDatapointsLimit() / 2)
-//     }
-//   };
-// }
+export function defaultTimewindow(timeService: TimeService): Timewindow {
+    const currentTime = moment().valueOf();
+    return {
+        displayValue: '',
+        hideInterval: false,
+        hideAggregation: false,
+        hideAggInterval: false,
+        hideTimezone: false,
+        selectedTab: TimewindowType.REALTIME,
+        realtime: {
+            realtimeType: RealtimeWindowType.LAST_INTERVAL,
+            interval: SECOND,
+            timewindowMs: MINUTE,
+            quickInterval: QuickTimeInterval.CURRENT_DAY
+        },
+        history: {
+            historyType: HistoryWindowType.LAST_INTERVAL,
+            interval: SECOND,
+            timewindowMs: MINUTE,
+            fixedTimewindow: {
+                startTimeMs: currentTime - DAY,
+                endTimeMs: currentTime
+            },
+            quickInterval: QuickTimeInterval.CURRENT_DAY
+        },
+        aggregation: {
+            type: AggregationType.NONE,
+            limit: Math.floor(timeService.getMaxDatapointsLimit() / 2)
+        }
+    };
+}
 
 function getTimewindowType(timewindow: Timewindow): TimewindowType {
     if (isUndefined(timewindow.selectedTab)) {
@@ -223,106 +222,106 @@ function getTimewindowType(timewindow: Timewindow): TimewindowType {
     }
 }
 
-// export function initModelFromDefaultTimewindow(value: Timewindow, timeService: TimeService): Timewindow {
-//   const model = defaultTimewindow(timeService);
-//   if (value) {
-//     model.hideInterval = value.hideInterval;
-//     model.hideAggregation = value.hideAggregation;
-//     model.hideAggInterval = value.hideAggInterval;
-//     model.hideTimezone = value.hideTimezone;
-//     model.selectedTab = getTimewindowType(value);
-//     if (model.selectedTab === TimewindowType.REALTIME) {
-//       if (isDefined(value.realtime.interval)) {
-//         model.realtime.interval = value.realtime.interval;
-//       }
-//       if (isUndefined(value.realtime.realtimeType)) {
-//         if (isDefined(value.realtime.quickInterval)) {
-//           model.realtime.realtimeType = RealtimeWindowType.INTERVAL;
-//         } else {
-//           model.realtime.realtimeType = RealtimeWindowType.LAST_INTERVAL;
-//         }
-//       } else {
-//         model.realtime.realtimeType = value.realtime.realtimeType;
-//       }
-//       if (model.realtime.realtimeType === RealtimeWindowType.INTERVAL) {
-//         model.realtime.quickInterval = value.realtime.quickInterval;
-//       } else {
-//         model.realtime.timewindowMs = value.realtime.timewindowMs;
-//       }
-//     } else {
-//       if (isDefined(value.history.interval)) {
-//         model.history.interval = value.history.interval;
-//       }
-//       if (isUndefined(value.history.historyType)) {
-//         if (isDefined(value.history.timewindowMs)) {
-//           model.history.historyType = HistoryWindowType.LAST_INTERVAL;
-//         } else if (isDefined(value.history.quickInterval)) {
-//           model.history.historyType = HistoryWindowType.INTERVAL;
-//         } else {
-//           model.history.historyType = HistoryWindowType.FIXED;
-//         }
-//       } else {
-//         model.history.historyType = value.history.historyType;
-//       }
-//       if (model.history.historyType === HistoryWindowType.LAST_INTERVAL) {
-//         model.history.timewindowMs = value.history.timewindowMs;
-//       } else if (model.history.historyType === HistoryWindowType.INTERVAL) {
-//         model.history.quickInterval = value.history.quickInterval;
-//       } else {
-//         model.history.fixedTimewindow.startTimeMs = value.history.fixedTimewindow.startTimeMs;
-//         model.history.fixedTimewindow.endTimeMs = value.history.fixedTimewindow.endTimeMs;
-//       }
-//     }
-//     if (value.aggregation) {
-//       if (value.aggregation.type) {
-//         model.aggregation.type = value.aggregation.type;
-//       }
-//       model.aggregation.limit = value.aggregation.limit || Math.floor(timeService.getMaxDatapointsLimit() / 2);
-//     }
-//     model.timezone = value.timezone;
-//   }
-//   return model;
-// }
+export function initModelFromDefaultTimewindow(value: Timewindow, timeService: TimeService): Timewindow {
+    const model = defaultTimewindow(timeService);
+    if (value) {
+        model.hideInterval = value.hideInterval;
+        model.hideAggregation = value.hideAggregation;
+        model.hideAggInterval = value.hideAggInterval;
+        model.hideTimezone = value.hideTimezone;
+        model.selectedTab = getTimewindowType(value);
+        if (model.selectedTab === TimewindowType.REALTIME) {
+            if (isDefined(value.realtime.interval)) {
+                model.realtime.interval = value.realtime.interval;
+            }
+            if (isUndefined(value.realtime.realtimeType)) {
+                if (isDefined(value.realtime.quickInterval)) {
+                    model.realtime.realtimeType = RealtimeWindowType.INTERVAL;
+                } else {
+                    model.realtime.realtimeType = RealtimeWindowType.LAST_INTERVAL;
+                }
+            } else {
+                model.realtime.realtimeType = value.realtime.realtimeType;
+            }
+            if (model.realtime.realtimeType === RealtimeWindowType.INTERVAL) {
+                model.realtime.quickInterval = value.realtime.quickInterval;
+            } else {
+                model.realtime.timewindowMs = value.realtime.timewindowMs;
+            }
+        } else {
+            if (isDefined(value.history.interval)) {
+                model.history.interval = value.history.interval;
+            }
+            if (isUndefined(value.history.historyType)) {
+                if (isDefined(value.history.timewindowMs)) {
+                    model.history.historyType = HistoryWindowType.LAST_INTERVAL;
+                } else if (isDefined(value.history.quickInterval)) {
+                    model.history.historyType = HistoryWindowType.INTERVAL;
+                } else {
+                    model.history.historyType = HistoryWindowType.FIXED;
+                }
+            } else {
+                model.history.historyType = value.history.historyType;
+            }
+            if (model.history.historyType === HistoryWindowType.LAST_INTERVAL) {
+                model.history.timewindowMs = value.history.timewindowMs;
+            } else if (model.history.historyType === HistoryWindowType.INTERVAL) {
+                model.history.quickInterval = value.history.quickInterval;
+            } else {
+                model.history.fixedTimewindow.startTimeMs = value.history.fixedTimewindow.startTimeMs;
+                model.history.fixedTimewindow.endTimeMs = value.history.fixedTimewindow.endTimeMs;
+            }
+        }
+        if (value.aggregation) {
+            if (value.aggregation.type) {
+                model.aggregation.type = value.aggregation.type;
+            }
+            model.aggregation.limit = value.aggregation.limit || Math.floor(timeService.getMaxDatapointsLimit() / 2);
+        }
+        model.timezone = value.timezone;
+    }
+    return model;
+}
 
-// export function toHistoryTimewindow(timewindow: Timewindow, startTimeMs: number, endTimeMs: number,
-//                                     interval: number, timeService: TimeService): Timewindow {
-//   if (timewindow.history) {
-//     interval = isDefined(interval) ? interval : timewindow.history.interval;
-//   } else if (timewindow.realtime) {
-//     interval = timewindow.realtime.interval;
-//   }  else {
-//     interval = 0;
-//   }
-//   let aggType: AggregationType;
-//   let limit: number;
-//   if (timewindow.aggregation) {
-//     aggType = timewindow.aggregation.type || AggregationType.AVG;
-//     limit = timewindow.aggregation.limit || timeService.getMaxDatapointsLimit();
-//   } else {
-//     aggType = AggregationType.AVG;
-//     limit = timeService.getMaxDatapointsLimit();
-//   }
-//   return {
-//     hideInterval: timewindow.hideInterval || false,
-//     hideAggregation: timewindow.hideAggregation || false,
-//     hideAggInterval: timewindow.hideAggInterval || false,
-//     hideTimezone: timewindow.hideTimezone || false,
-//     selectedTab: TimewindowType.HISTORY,
-//     history: {
-//       historyType: HistoryWindowType.FIXED,
-//       fixedTimewindow: {
-//         startTimeMs,
-//         endTimeMs
-//       },
-//       interval: timeService.boundIntervalToTimewindow(endTimeMs - startTimeMs, interval, AggregationType.AVG)
-//     },
-//     aggregation: {
-//       type: aggType,
-//       limit
-//     },
-//     timezone: timewindow.timezone
-//   };
-// }
+export function toHistoryTimewindow(timewindow: Timewindow, startTimeMs: number, endTimeMs: number,
+    interval: number, timeService: TimeService): Timewindow {
+    if (timewindow.history) {
+        interval = isDefined(interval) ? interval : timewindow.history.interval;
+    } else if (timewindow.realtime) {
+        interval = timewindow.realtime.interval;
+    } else {
+        interval = 0;
+    }
+    let aggType: AggregationType;
+    let limit: number;
+    if (timewindow.aggregation) {
+        aggType = timewindow.aggregation.type || AggregationType.AVG;
+        limit = timewindow.aggregation.limit || timeService.getMaxDatapointsLimit();
+    } else {
+        aggType = AggregationType.AVG;
+        limit = timeService.getMaxDatapointsLimit();
+    }
+    return {
+        hideInterval: timewindow.hideInterval || false,
+        hideAggregation: timewindow.hideAggregation || false,
+        hideAggInterval: timewindow.hideAggInterval || false,
+        hideTimezone: timewindow.hideTimezone || false,
+        selectedTab: TimewindowType.HISTORY,
+        history: {
+            historyType: HistoryWindowType.FIXED,
+            fixedTimewindow: {
+                startTimeMs,
+                endTimeMs
+            },
+            interval: timeService.boundIntervalToTimewindow(endTimeMs - startTimeMs, interval, AggregationType.AVG)
+        },
+        aggregation: {
+            type: aggType,
+            limit
+        },
+        timezone: timewindow.timezone
+    };
+}
 
 export function timewindowTypeChanged(newTimewindow: Timewindow, oldTimewindow: Timewindow): boolean {
     if (!newTimewindow || !oldTimewindow) {
@@ -333,155 +332,155 @@ export function timewindowTypeChanged(newTimewindow: Timewindow, oldTimewindow: 
     return newType !== oldType;
 }
 
-// export function calculateTsOffset(timezone?: string): number {
-//   if (timezone) {
-//     const tz = getTimezone(timezone);
-//     const localOffset = moment().utcOffset();
-//     return (tz.utcOffset() - localOffset) * 60 * 1000;
-//   } else {
-//     return 0;
-//   }
-// }
+export function calculateTsOffset(timezone?: string): number {
+    if (timezone) {
+        const tz = getTimezone(timezone);
+        const localOffset = moment().utcOffset();
+        return (tz.utcOffset() - localOffset) * 60 * 1000;
+    } else {
+        return 0;
+    }
+}
 
 export function isHistoryTypeTimewindow(timewindow: Timewindow): boolean {
     return getTimewindowType(timewindow) === TimewindowType.HISTORY;
 }
 
-// export function createSubscriptionTimewindow(timewindow: Timewindow, stDiff: number, stateData: boolean,
-//                                              timeService: TimeService): SubscriptionTimewindow {
-//   const subscriptionTimewindow: SubscriptionTimewindow = {
-//     fixedWindow: null,
-//     realtimeWindowMs: null,
-//     aggregation: {
-//       interval: SECOND,
-//       limit: timeService.getMaxDatapointsLimit(),
-//       type: AggregationType.AVG
-//     },
-//     timezone: timewindow.timezone,
-//     tsOffset: calculateTsOffset(timewindow.timezone)
-//   };
-//   let aggTimewindow;
-//   if (stateData) {
-//     subscriptionTimewindow.aggregation.type = AggregationType.NONE;
-//     subscriptionTimewindow.aggregation.stateData = true;
-//   }
-//   if (isDefined(timewindow.aggregation) && !stateData) {
-//     subscriptionTimewindow.aggregation = {
-//       type: timewindow.aggregation.type || AggregationType.AVG,
-//       limit: timewindow.aggregation.limit || timeService.getMaxDatapointsLimit()
-//     };
-//   }
-//   const selectedTab = getTimewindowType(timewindow);
-//   if (selectedTab === TimewindowType.REALTIME) {
-//     let realtimeType = timewindow.realtime.realtimeType;
-//     if (isUndefined(realtimeType)) {
-//       if (isDefined(timewindow.realtime.quickInterval)) {
-//         realtimeType = RealtimeWindowType.INTERVAL;
-//       } else {
-//         realtimeType = RealtimeWindowType.LAST_INTERVAL;
-//       }
-//     }
-//     if (realtimeType === RealtimeWindowType.INTERVAL) {
-//       subscriptionTimewindow.realtimeWindowMs =
-//         getSubscriptionRealtimeWindowFromTimeInterval(timewindow.realtime.quickInterval, timewindow.timezone);
-//       subscriptionTimewindow.quickInterval = timewindow.realtime.quickInterval;
-//       const currentDate = getCurrentTime(timewindow.timezone);
-//       subscriptionTimewindow.startTs = calculateIntervalStartTime(timewindow.realtime.quickInterval, currentDate).valueOf();
-//     } else {
-//       subscriptionTimewindow.realtimeWindowMs = timewindow.realtime.timewindowMs;
-//       const currentDate = getCurrentTime(timewindow.timezone);
-//       subscriptionTimewindow.startTs = currentDate.valueOf() + stDiff - subscriptionTimewindow.realtimeWindowMs;
-//     }
-//     subscriptionTimewindow.aggregation.interval =
-//       timeService.boundIntervalToTimewindow(subscriptionTimewindow.realtimeWindowMs, timewindow.realtime.interval,
-//         subscriptionTimewindow.aggregation.type);
-//     aggTimewindow = subscriptionTimewindow.realtimeWindowMs;
-//     if (realtimeType !== RealtimeWindowType.INTERVAL) {
-//       const startDiff = subscriptionTimewindow.startTs % subscriptionTimewindow.aggregation.interval;
-//       if (startDiff) {
-//         subscriptionTimewindow.startTs -= startDiff;
-//         aggTimewindow += subscriptionTimewindow.aggregation.interval;
-//       }
-//     }
-//   } else {
-//     let historyType = timewindow.history.historyType;
-//     if (isUndefined(historyType)) {
-//       if (isDefined(timewindow.history.timewindowMs)) {
-//         historyType = HistoryWindowType.LAST_INTERVAL;
-//       } else if (isDefined(timewindow.history.quickInterval)) {
-//         historyType = HistoryWindowType.INTERVAL;
-//       } else {
-//         historyType = HistoryWindowType.FIXED;
-//       }
-//     }
-//     if (historyType === HistoryWindowType.LAST_INTERVAL) {
-//       const currentDate = getCurrentTime(timewindow.timezone);
-//       const currentTime = currentDate.valueOf();
-//       subscriptionTimewindow.fixedWindow = {
-//         startTimeMs: currentTime - timewindow.history.timewindowMs,
-//         endTimeMs: currentTime
-//       };
-//       aggTimewindow = timewindow.history.timewindowMs;
-//     } else if (historyType === HistoryWindowType.INTERVAL) {
-//       const startEndTime = calculateIntervalStartEndTime(timewindow.history.quickInterval, timewindow.timezone);
-//       subscriptionTimewindow.fixedWindow = {
-//         startTimeMs: startEndTime[0],
-//         endTimeMs: startEndTime[1]
-//       };
-//       aggTimewindow = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
-//       subscriptionTimewindow.quickInterval = timewindow.history.quickInterval;
-//     } else {
-//       subscriptionTimewindow.fixedWindow = {
-//         startTimeMs: timewindow.history.fixedTimewindow.startTimeMs - subscriptionTimewindow.tsOffset,
-//         endTimeMs: timewindow.history.fixedTimewindow.endTimeMs - subscriptionTimewindow.tsOffset
-//       };
-//       aggTimewindow = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
-//     }
-//     subscriptionTimewindow.startTs = subscriptionTimewindow.fixedWindow.startTimeMs;
-//     subscriptionTimewindow.aggregation.interval =
-//       timeService.boundIntervalToTimewindow(aggTimewindow, timewindow.history.interval, subscriptionTimewindow.aggregation.type);
-//   }
-//   const aggregation = subscriptionTimewindow.aggregation;
-//   aggregation.timeWindow = aggTimewindow;
-//   if (aggregation.type !== AggregationType.NONE) {
-//     aggregation.limit = Math.ceil(aggTimewindow / subscriptionTimewindow.aggregation.interval);
-//   }
-//   return subscriptionTimewindow;
-// }
+export function createSubscriptionTimewindow(timewindow: Timewindow, stDiff: number, stateData: boolean,
+    timeService: TimeService): SubscriptionTimewindow {
+    const subscriptionTimewindow: SubscriptionTimewindow = {
+        fixedWindow: null,
+        realtimeWindowMs: null,
+        aggregation: {
+            interval: SECOND,
+            limit: timeService.getMaxDatapointsLimit(),
+            type: AggregationType.AVG
+        },
+        timezone: timewindow.timezone,
+        tsOffset: calculateTsOffset(timewindow.timezone)
+    };
+    let aggTimewindow;
+    if (stateData) {
+        subscriptionTimewindow.aggregation.type = AggregationType.NONE;
+        subscriptionTimewindow.aggregation.stateData = true;
+    }
+    if (isDefined(timewindow.aggregation) && !stateData) {
+        subscriptionTimewindow.aggregation = {
+            type: timewindow.aggregation.type || AggregationType.AVG,
+            limit: timewindow.aggregation.limit || timeService.getMaxDatapointsLimit()
+        };
+    }
+    const selectedTab = getTimewindowType(timewindow);
+    if (selectedTab === TimewindowType.REALTIME) {
+        let realtimeType = timewindow.realtime.realtimeType;
+        if (isUndefined(realtimeType)) {
+            if (isDefined(timewindow.realtime.quickInterval)) {
+                realtimeType = RealtimeWindowType.INTERVAL;
+            } else {
+                realtimeType = RealtimeWindowType.LAST_INTERVAL;
+            }
+        }
+        if (realtimeType === RealtimeWindowType.INTERVAL) {
+            subscriptionTimewindow.realtimeWindowMs =
+                getSubscriptionRealtimeWindowFromTimeInterval(timewindow.realtime.quickInterval, timewindow.timezone);
+            subscriptionTimewindow.quickInterval = timewindow.realtime.quickInterval;
+            const currentDate = getCurrentTime(timewindow.timezone);
+            subscriptionTimewindow.startTs = calculateIntervalStartTime(timewindow.realtime.quickInterval, currentDate).valueOf();
+        } else {
+            subscriptionTimewindow.realtimeWindowMs = timewindow.realtime.timewindowMs;
+            const currentDate = getCurrentTime(timewindow.timezone);
+            subscriptionTimewindow.startTs = currentDate.valueOf() + stDiff - subscriptionTimewindow.realtimeWindowMs;
+        }
+        subscriptionTimewindow.aggregation.interval =
+            timeService.boundIntervalToTimewindow(subscriptionTimewindow.realtimeWindowMs, timewindow.realtime.interval,
+                subscriptionTimewindow.aggregation.type);
+        aggTimewindow = subscriptionTimewindow.realtimeWindowMs;
+        if (realtimeType !== RealtimeWindowType.INTERVAL) {
+            const startDiff = subscriptionTimewindow.startTs % subscriptionTimewindow.aggregation.interval;
+            if (startDiff) {
+                subscriptionTimewindow.startTs -= startDiff;
+                aggTimewindow += subscriptionTimewindow.aggregation.interval;
+            }
+        }
+    } else {
+        let historyType = timewindow.history.historyType;
+        if (isUndefined(historyType)) {
+            if (isDefined(timewindow.history.timewindowMs)) {
+                historyType = HistoryWindowType.LAST_INTERVAL;
+            } else if (isDefined(timewindow.history.quickInterval)) {
+                historyType = HistoryWindowType.INTERVAL;
+            } else {
+                historyType = HistoryWindowType.FIXED;
+            }
+        }
+        if (historyType === HistoryWindowType.LAST_INTERVAL) {
+            const currentDate = getCurrentTime(timewindow.timezone);
+            const currentTime = currentDate.valueOf();
+            subscriptionTimewindow.fixedWindow = {
+                startTimeMs: currentTime - timewindow.history.timewindowMs,
+                endTimeMs: currentTime
+            };
+            aggTimewindow = timewindow.history.timewindowMs;
+        } else if (historyType === HistoryWindowType.INTERVAL) {
+            const startEndTime = calculateIntervalStartEndTime(timewindow.history.quickInterval, timewindow.timezone);
+            subscriptionTimewindow.fixedWindow = {
+                startTimeMs: startEndTime[0],
+                endTimeMs: startEndTime[1]
+            };
+            aggTimewindow = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
+            subscriptionTimewindow.quickInterval = timewindow.history.quickInterval;
+        } else {
+            subscriptionTimewindow.fixedWindow = {
+                startTimeMs: timewindow.history.fixedTimewindow.startTimeMs - subscriptionTimewindow.tsOffset,
+                endTimeMs: timewindow.history.fixedTimewindow.endTimeMs - subscriptionTimewindow.tsOffset
+            };
+            aggTimewindow = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
+        }
+        subscriptionTimewindow.startTs = subscriptionTimewindow.fixedWindow.startTimeMs;
+        subscriptionTimewindow.aggregation.interval =
+            timeService.boundIntervalToTimewindow(aggTimewindow, timewindow.history.interval, subscriptionTimewindow.aggregation.type);
+    }
+    const aggregation = subscriptionTimewindow.aggregation;
+    aggregation.timeWindow = aggTimewindow;
+    if (aggregation.type !== AggregationType.NONE) {
+        aggregation.limit = Math.ceil(aggTimewindow / subscriptionTimewindow.aggregation.interval);
+    }
+    return subscriptionTimewindow;
+}
 
-// function getSubscriptionRealtimeWindowFromTimeInterval(interval: QuickTimeInterval, tz?: string): number {
-//   let currentDate;
-//   switch (interval) {
-//     case QuickTimeInterval.CURRENT_HOUR:
-//       return HOUR;
-//     case QuickTimeInterval.CURRENT_DAY:
-//     case QuickTimeInterval.CURRENT_DAY_SO_FAR:
-//       return DAY;
-//     case QuickTimeInterval.CURRENT_WEEK:
-//     case QuickTimeInterval.CURRENT_WEEK_ISO:
-//     case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
-//     case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
-//       return WEEK;
-//     case QuickTimeInterval.CURRENT_MONTH:
-//     case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
-//       currentDate = getCurrentTime(tz);
-//       return currentDate.endOf('month').diff(currentDate.clone().startOf('month'));
-//     case QuickTimeInterval.CURRENT_YEAR:
-//     case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
-//       currentDate = getCurrentTime(tz);
-//       return currentDate.endOf('year').diff(currentDate.clone().startOf('year'));
-//   }
-// }
+function getSubscriptionRealtimeWindowFromTimeInterval(interval: QuickTimeInterval, tz?: string): number {
+    let currentDate;
+    switch (interval) {
+        case QuickTimeInterval.CURRENT_HOUR:
+            return HOUR;
+        case QuickTimeInterval.CURRENT_DAY:
+        case QuickTimeInterval.CURRENT_DAY_SO_FAR:
+            return DAY;
+        case QuickTimeInterval.CURRENT_WEEK:
+        case QuickTimeInterval.CURRENT_WEEK_ISO:
+        case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
+        case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
+            return WEEK;
+        case QuickTimeInterval.CURRENT_MONTH:
+        case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
+            currentDate = getCurrentTime(tz);
+            return currentDate.endOf('month').diff(currentDate.clone().startOf('month'));
+        case QuickTimeInterval.CURRENT_YEAR:
+        case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
+            currentDate = getCurrentTime(tz);
+            return currentDate.endOf('year').diff(currentDate.clone().startOf('year'));
+    }
+}
 
-// export function calculateIntervalStartEndTime(interval: QuickTimeInterval, tz?: string): [number, number] {
-//   const startEndTs: [number, number] = [0, 0];
-//   const currentDate = getCurrentTime(tz);
-//   const startDate = calculateIntervalStartTime(interval, currentDate);
-//   startEndTs[0] = startDate.valueOf();
-//   const endDate = calculateIntervalEndTime(interval, startDate, tz);
-//   startEndTs[1] = endDate.valueOf();
-//   return startEndTs;
-// }
+export function calculateIntervalStartEndTime(interval: QuickTimeInterval, tz?: string): [number, number] {
+    const startEndTs: [number, number] = [0, 0];
+    const currentDate = getCurrentTime(tz);
+    const startDate = calculateIntervalStartTime(interval, currentDate);
+    startEndTs[0] = startDate.valueOf();
+    const endDate = calculateIntervalEndTime(interval, startDate, tz);
+    startEndTs[1] = endDate.valueOf();
+    return startEndTs;
+}
 
 export function calculateIntervalStartTime(interval: QuickTimeInterval, currentDate: moment_.Moment): moment_.Moment {
     switch (interval) {
@@ -526,34 +525,34 @@ export function calculateIntervalStartTime(interval: QuickTimeInterval, currentD
     }
 }
 
-// export function calculateIntervalEndTime(interval: QuickTimeInterval, startDate: moment_.Moment, tz?: string): number {
-//   switch (interval) {
-//     case QuickTimeInterval.YESTERDAY:
-//     case QuickTimeInterval.DAY_BEFORE_YESTERDAY:
-//     case QuickTimeInterval.THIS_DAY_LAST_WEEK:
-//     case QuickTimeInterval.CURRENT_DAY:
-//       return startDate.add(1, 'day').valueOf();
-//     case QuickTimeInterval.PREVIOUS_WEEK:
-//     case QuickTimeInterval.PREVIOUS_WEEK_ISO:
-//     case QuickTimeInterval.CURRENT_WEEK:
-//     case QuickTimeInterval.CURRENT_WEEK_ISO:
-//       return startDate.add(1, 'week').valueOf();
-//     case QuickTimeInterval.PREVIOUS_MONTH:
-//     case QuickTimeInterval.CURRENT_MONTH:
-//       return startDate.add(1, 'month').valueOf();
-//     case QuickTimeInterval.PREVIOUS_YEAR:
-//     case QuickTimeInterval.CURRENT_YEAR:
-//       return startDate.add(1, 'year').valueOf();
-//     case QuickTimeInterval.CURRENT_HOUR:
-//       return startDate.add(1, 'hour').valueOf();
-//     case QuickTimeInterval.CURRENT_DAY_SO_FAR:
-//     case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
-//     case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
-//     case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
-//     case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
-//       return getCurrentTime(tz).valueOf();
-//   }
-// }
+export function calculateIntervalEndTime(interval: QuickTimeInterval, startDate: moment_.Moment, tz?: string): number {
+    switch (interval) {
+        case QuickTimeInterval.YESTERDAY:
+        case QuickTimeInterval.DAY_BEFORE_YESTERDAY:
+        case QuickTimeInterval.THIS_DAY_LAST_WEEK:
+        case QuickTimeInterval.CURRENT_DAY:
+            return startDate.add(1, 'day').valueOf();
+        case QuickTimeInterval.PREVIOUS_WEEK:
+        case QuickTimeInterval.PREVIOUS_WEEK_ISO:
+        case QuickTimeInterval.CURRENT_WEEK:
+        case QuickTimeInterval.CURRENT_WEEK_ISO:
+            return startDate.add(1, 'week').valueOf();
+        case QuickTimeInterval.PREVIOUS_MONTH:
+        case QuickTimeInterval.CURRENT_MONTH:
+            return startDate.add(1, 'month').valueOf();
+        case QuickTimeInterval.PREVIOUS_YEAR:
+        case QuickTimeInterval.CURRENT_YEAR:
+            return startDate.add(1, 'year').valueOf();
+        case QuickTimeInterval.CURRENT_HOUR:
+            return startDate.add(1, 'hour').valueOf();
+        case QuickTimeInterval.CURRENT_DAY_SO_FAR:
+        case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
+        case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
+        case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
+        case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
+            return getCurrentTime(tz).valueOf();
+    }
+}
 
 export function quickTimeIntervalPeriod(interval: QuickTimeInterval): number {
     switch (interval) {
@@ -621,66 +620,66 @@ export function calculateIntervalComparisonStartTime(interval: QuickTimeInterval
     }
 }
 
-// export function calculateIntervalComparisonEndTime(interval: QuickTimeInterval,
-//                                                    comparisonStartDate: moment_.Moment,
-//                                                    endDate: moment_.Moment): number {
-//   switch (interval) {
-//     case QuickTimeInterval.CURRENT_DAY_SO_FAR:
-//       return endDate.subtract(1, 'days').valueOf();
-//     case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
-//     case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
-//       return endDate.subtract(1, 'week').valueOf();
-//     case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
-//       return endDate.subtract(1, 'month').valueOf();
-//     case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
-//       return endDate.subtract(1, 'year').valueOf();
-//     default:
-//       return calculateIntervalEndTime(interval, comparisonStartDate);
-//   }
-// }
+export function calculateIntervalComparisonEndTime(interval: QuickTimeInterval,
+    comparisonStartDate: moment_.Moment,
+    endDate: moment_.Moment): number {
+    switch (interval) {
+        case QuickTimeInterval.CURRENT_DAY_SO_FAR:
+            return endDate.subtract(1, 'days').valueOf();
+        case QuickTimeInterval.CURRENT_WEEK_SO_FAR:
+        case QuickTimeInterval.CURRENT_WEEK_ISO_SO_FAR:
+            return endDate.subtract(1, 'week').valueOf();
+        case QuickTimeInterval.CURRENT_MONTH_SO_FAR:
+            return endDate.subtract(1, 'month').valueOf();
+        case QuickTimeInterval.CURRENT_YEAR_SO_FAR:
+            return endDate.subtract(1, 'year').valueOf();
+        default:
+            return calculateIntervalEndTime(interval, comparisonStartDate);
+    }
+}
 
-// export function createTimewindowForComparison(subscriptionTimewindow: SubscriptionTimewindow,
-//                                               timeUnit: ComparisonDuration): SubscriptionTimewindow {
-//   const timewindowForComparison: SubscriptionTimewindow = {
-//     fixedWindow: null,
-//     realtimeWindowMs: null,
-//     aggregation: subscriptionTimewindow.aggregation,
-//     tsOffset: subscriptionTimewindow.tsOffset
-//   };
+export function createTimewindowForComparison(subscriptionTimewindow: SubscriptionTimewindow,
+    timeUnit: ComparisonDuration): SubscriptionTimewindow {
+    const timewindowForComparison: SubscriptionTimewindow = {
+        fixedWindow: null,
+        realtimeWindowMs: null,
+        aggregation: subscriptionTimewindow.aggregation,
+        tsOffset: subscriptionTimewindow.tsOffset
+    };
 
-//   if (subscriptionTimewindow.fixedWindow) {
-//     let startTimeMs;
-//     let endTimeMs;
-//     if (timeUnit === 'previousInterval') {
-//       if (subscriptionTimewindow.quickInterval) {
-//         const startDate = moment(subscriptionTimewindow.fixedWindow.startTimeMs);
-//         const endDate = moment(subscriptionTimewindow.fixedWindow.endTimeMs);
-//         if (subscriptionTimewindow.timezone) {
-//           startDate.tz(subscriptionTimewindow.timezone);
-//           endDate.tz(subscriptionTimewindow.timezone);
-//         }
-//         const comparisonStartDate = calculateIntervalComparisonStartTime(subscriptionTimewindow.quickInterval, startDate);
-//         startTimeMs = comparisonStartDate.valueOf();
-//         endTimeMs = calculateIntervalComparisonEndTime(subscriptionTimewindow.quickInterval, comparisonStartDate, endDate);
-//       } else {
-//         const timeInterval = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
-//         endTimeMs = subscriptionTimewindow.fixedWindow.startTimeMs;
-//         startTimeMs = endTimeMs - timeInterval;
-//       }
-//     } else {
-//       const timeInterval = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
-//       endTimeMs = moment(subscriptionTimewindow.fixedWindow.endTimeMs).subtract(1, timeUnit).valueOf();
-//       startTimeMs = endTimeMs - timeInterval;
-//     }
-//     timewindowForComparison.startTs = startTimeMs;
-//     timewindowForComparison.fixedWindow = {
-//       startTimeMs: timewindowForComparison.startTs,
-//       endTimeMs
-//     };
-//   }
+    if (subscriptionTimewindow.fixedWindow) {
+        let startTimeMs;
+        let endTimeMs;
+        if (timeUnit === 'previousInterval') {
+            if (subscriptionTimewindow.quickInterval) {
+                const startDate = moment(subscriptionTimewindow.fixedWindow.startTimeMs);
+                const endDate = moment(subscriptionTimewindow.fixedWindow.endTimeMs);
+                if (subscriptionTimewindow.timezone) {
+                    startDate.tz(subscriptionTimewindow.timezone);
+                    endDate.tz(subscriptionTimewindow.timezone);
+                }
+                const comparisonStartDate = calculateIntervalComparisonStartTime(subscriptionTimewindow.quickInterval, startDate);
+                startTimeMs = comparisonStartDate.valueOf();
+                endTimeMs = calculateIntervalComparisonEndTime(subscriptionTimewindow.quickInterval, comparisonStartDate, endDate);
+            } else {
+                const timeInterval = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
+                endTimeMs = subscriptionTimewindow.fixedWindow.startTimeMs;
+                startTimeMs = endTimeMs - timeInterval;
+            }
+        } else {
+            const timeInterval = subscriptionTimewindow.fixedWindow.endTimeMs - subscriptionTimewindow.fixedWindow.startTimeMs;
+            endTimeMs = moment(subscriptionTimewindow.fixedWindow.endTimeMs).subtract(1, timeUnit).valueOf();
+            startTimeMs = endTimeMs - timeInterval;
+        }
+        timewindowForComparison.startTs = startTimeMs;
+        timewindowForComparison.fixedWindow = {
+            startTimeMs: timewindowForComparison.startTs,
+            endTimeMs
+        };
+    }
 
-//   return timewindowForComparison;
-// }
+    return timewindowForComparison;
+}
 
 export function cloneSelectedTimewindow(timewindow: Timewindow): Timewindow {
     const cloned: Timewindow = {};
@@ -874,26 +873,26 @@ export function getDefaultTimezone(): string {
     return defaultTimezone;
 }
 
-// export function getCurrentTime(tz?: string): moment_.Moment {
-//   if (tz) {
-//     return moment().tz(tz);
-//   } else {
-//     return moment();
-//   }
-// }
+export function getCurrentTime(tz?: string): moment_.Moment {
+    if (tz) {
+        return moment().tz(tz);
+    } else {
+        return moment();
+    }
+}
 
-// export function getTime(ts: number, tz?: string): moment_.Moment {
-//   if (tz) {
-//     return moment(ts).tz(tz);
-//   } else {
-//     return moment(ts);
-//   }
-// }
+export function getTime(ts: number, tz?: string): moment_.Moment {
+    if (tz) {
+        return moment(ts).tz(tz);
+    } else {
+        return moment(ts);
+    }
+}
 
 export function getTimezone(tz: string): moment_.Moment {
     return moment.tz(tz);
 }
 
-// export function getCurrentTimeForComparison(timeForComparison: moment_.unitOfTime.DurationConstructor, tz?: string): moment_.Moment {
-//   return getCurrentTime(tz).subtract(1, timeForComparison);
-// }
+export function getCurrentTimeForComparison(timeForComparison: moment_.unitOfTime.DurationConstructor, tz?: string): moment_.Moment {
+    return getCurrentTime(tz).subtract(1, timeForComparison);
+}

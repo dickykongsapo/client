@@ -15,15 +15,16 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Paper } from '@mui/material';
-import TextField from '@mui/material';
-import './account-popup.styles.scss';
-import { selectAuthState, selectAuthUser } from 'src/app/core/auth/auth.selectors';
-import { useStore } from 'react-redux';
-import { AppState } from 'src/app/core/core.state';
+import '@components/account-popup/account-popup.styles.scss';
+import { selectAuthState, selectAuthUser } from '@app/core/auth/auth.selectors';
+import { connect, useStore } from 'react-redux';
+import { AppState } from '@app/core/core.state';
 import { Store } from '@reduxjs/toolkit';
 import { useNavigate } from 'react-router-dom';
-import { AuthService } from 'src/services/auth.service';
-import ThemedButton from 'src/components/button/button.component';
+import { AuthService } from '@app/core/services/auth.service';
+import ThemedButton from '@components/button/button.component';
+import { Authority, AuthUser } from '@app/shared/public-api';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -39,6 +40,7 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
     const [userName, setUserName] = useState('');
     const [userAuthority, setUserAuthority] = useState('');
     const [showLoginButton, setShowLoginButton] = useState(true)
+    const { t, i18n } = useTranslation();
     const authService = new AuthService();
     const state: AppState = store.getState();
 
@@ -48,17 +50,12 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
 
     const auth = () => {
         const authuser = selectAuthUser(state)
-
         if (authuser) {
             setUserName(authuser.sub)
-            setUserAuthority(authuser.authority)
+            setUserAuthority(getAuthorityName(authuser))
             setShowLoginButton(false)
         }
     }
-
-    // const searchChange = (e: { target: { value: any; }; }) => {
-    //     setSearchString(e.target.value)
-    // }
 
     const clickLoginButton = () => {
         handleAccountPopupClose()
@@ -66,10 +63,7 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
     }
 
     const clickLogoutButton = () => {
-        handleAccountPopupClose()
         authService.logout();
-        auth()
-        navigate('/login')
     }
 
     return (
@@ -78,18 +72,51 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
 
             {showLoginButton ?
                 <div>
-                    <div>You are not logged in</div>
-                    <ThemedButton onClick={clickLoginButton} word='Login' />
+                    <div>{t('user.not-logged-in')}</div>
+                    <ThemedButton onClick={clickLoginButton} word={t('user.login')} />
                 </div>
                 :
                 <div>
                     <div>{userName}</div>
-                    <div>{userAuthority}</div>
-                    <ThemedButton onClick={clickLogoutButton} word='Logout' />
+                    <div>{t(userAuthority)}</div>
+                    <ThemedButton onClick={clickLogoutButton} word={t('user.logout')} />
                 </div>}
         </Paper>
     )
 }
 
 
-export default AccountPopup;
+const mapStateToProps = (state) => {
+
+    return {
+        authuser: state.auth.authUser,
+    }
+}
+
+
+export default (AccountPopup);
+
+const getAuthorityName = (authUser: AuthUser): string => {
+    let name = null;
+    if (authUser) {
+        const authority = authUser.authority;
+        switch (authority) {
+            case Authority.SYS_ADMIN:
+                name = 'user.sys-admin';
+                break;
+            case Authority.TENANT_ADMIN:
+                name = 'user.tenant-admin';
+                break;
+            case Authority.CUSTOMER_ADMIN:
+                name = 'user.customer-admin';
+                break;
+            case Authority.CUSTOMER_USER:
+                name = 'user.customer';
+                break;
+            case Authority.TENANT_USER:
+                name = 'user.tenant-user';
+                break;
+        }
+    }
+    return name;
+}

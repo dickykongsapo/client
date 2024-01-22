@@ -16,8 +16,6 @@
 
 import { AppState } from '../core.state';
 import { WhiteLabelState } from './white-label.models';
-import { take } from 'rxjs/operators';
-import { AuthUser } from '../../../models/user.model';
 import { createSelector, Store } from '@reduxjs/toolkit';
 
 

@@ -7,10 +7,19 @@ function resolve(dir) {
 module.exports = function override(config) {
     config.resolve.alias = {
         ...config.resolve.alias,
-        // '@': resolve('src'),
-        // '@components': resolve('src/components'),
-        // '@service': resolve('src/services'),
+        '@': resolve('src'),
+        '@app': resolve('src/app'),
+        '@assets': resolve('src/assets'),
+        '@models': resolve('src/models'),
+        '@pages': resolve('src/pages'),
+        '@components': resolve('src/components'),
+        '@services': resolve('src/services'),
+        '@styles': resolve('src/styles'),
+        '@store': resolve('src/store'),
+        '@home': resolve('src/app/modules/home'),
+        '@shared': resolve('src/app/shared')
     };
+    config.plugin
     // config.resolve.fallback = {
     //     ...config.resolve.fallpack,
 

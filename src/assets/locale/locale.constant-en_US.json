@@ -1,4 +1,5 @@
 {
+    "hello": "hello!",
     "access": {
         "unauthorized": "Unauthorized",
         "unauthorized-access": "Unauthorized Access",
@@ -2641,7 +2642,11 @@
         "demote-to-customer-user": "Demote to Customer User",
         "demote-to-customer-user-message": "User account was successfully demoted to Customer User",
         "promote-to-customer-admin": "Promote to to Customer Admin",
-        "promote-to-customer-admin-message": "User account was successfully promoted to to Customer Admin"
+        "promote-to-customer-admin-message": "User account was successfully promoted to to Customer Admin",
+        "not-logged-in": "You are not logged in!",
+        "login": "Login",
+        "logout": "Logout",
+        "reset": "Reset"
     },
     "value": {
         "type": "Value type",

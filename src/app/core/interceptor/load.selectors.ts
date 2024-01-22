@@ -17,7 +17,6 @@
 import { AppState } from '../core.state';
 import { LoadState } from './load.models';
 import { take } from 'rxjs/operators';
-import { AuthUser } from '../../../models/user.model';
 import { createSelector, Store } from '@reduxjs/toolkit';
 
 

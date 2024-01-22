@@ -14,9 +14,9 @@
 /// limitations under the License.
 ///
 
-import { Direction, SortOrder } from 'src/models/page/sort-order';
-import { emptyPageData, PageData } from 'src/models/page/page-data';
-import { getDescendantProp, isObject } from 'src/app/core/utils';
+import { Direction, SortOrder } from '@models/page/sort-order';
+import { emptyPageData, PageData } from '@models/page/page-data';
+import { getDescendantProp, isObject } from '@app/core/utils';
 
 export const MAX_SAFE_PAGE_SIZE = 2147483647;
 

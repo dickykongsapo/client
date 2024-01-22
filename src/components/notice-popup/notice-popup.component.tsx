@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '@mui/material';
-import TextField from '@mui/material';
-import './notice-popup.styles.scss';
-import { NoticeMessage } from '../../models/notice-message.models';
+import '@components/notice-popup/notice-popup.styles.scss';
+import { NoticeMessage } from '@models/notice-message.models';
 
 
 const NoticePopup = (props: { searchString: string }

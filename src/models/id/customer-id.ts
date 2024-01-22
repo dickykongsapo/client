@@ -14,8 +14,8 @@
 /// limitations under the License.
 ///
 
-import { EntityId } from './entity-id';
-import { EntityType } from '../entity-type.models';
+import { EntityId } from '@models/id/entity-id';
+import { EntityType } from '@models/entity-type.models';
 
 export class CustomerId implements EntityId {
     entityType = EntityType.CUSTOMER;
