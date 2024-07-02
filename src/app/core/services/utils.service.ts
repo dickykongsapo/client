@@ -14,11 +14,11 @@
 /// limitations under the License.
 ///
 
-import { baseUrl, guid, isString } from "@app/core/utils";
-import { customTranslationsPrefix, EntityType, i18nPrefix } from "@app/shared/public-api";
+import { baseUrl, guid, isDefined, isString } from "@app/core/utils";
+import { alarmFields, customTranslationsPrefix, DataKeyType, EntityType, i18nPrefix } from "@app/shared/public-api";
 import { materialColors } from "@models/material.models";
 // import { WidgetAction } from "@models/widget-component.model";
-import { Datasource, DatasourceType, WidgetInfo } from "@models/widget.models";
+import { DataKey, Datasource, DatasourceType, KeyInfo, WidgetInfo } from "@models/widget.models";
 import i18n from 'src/i18n';
 const i18nRegExp = new RegExp(`{${i18nPrefix}:[^{}]+}`, 'g');
 
@@ -146,5 +146,57 @@ export class UtilsService {
         const colorIndex = index % materialColors.length;
         return materialColors[colorIndex].value;
     }
+
+
+    public generateColors(datasources: Array<Datasource>) {
+        let index = 0;
+        datasources.forEach((datasource) => {
+            datasource.dataKeys.forEach((dataKey) => {
+                if (!dataKey.color) {
+                    dataKey.color = this.getMaterialColor(index);
+                }
+                index++;
+            });
+        });
+    }
+
+    public createKey(keyInfo: KeyInfo, type: DataKeyType, index: number = -1): DataKey {
+        let label;
+        if (type === DataKeyType.alarm && !keyInfo.label) {
+            const alarmField = alarmFields[keyInfo.name];
+            if (alarmField) {
+                // label = this.translate.instant(alarmField.name);
+                label = (alarmField.name);
+            }
+        }
+        if (!label) {
+            label = keyInfo.label || keyInfo.name;
+        }
+        const dataKey: DataKey = {
+            name: keyInfo.name,
+            type,
+            label,
+            funcBody: keyInfo.funcBody,
+            settings: {},
+            _hash: Math.random()
+        };
+        if (keyInfo.units) {
+            dataKey.units = keyInfo.units;
+        }
+        if (isDefined(keyInfo.decimals)) {
+            dataKey.decimals = keyInfo.decimals;
+        }
+        if (keyInfo.color) {
+            dataKey.color = keyInfo.color;
+        } else if (index > -1) {
+            dataKey.color = this.getMaterialColor(index);
+        }
+        if (keyInfo.postFuncBody && keyInfo.postFuncBody.length) {
+            dataKey.usePostProcessing = true;
+            dataKey.postFuncBody = keyInfo.postFuncBody;
+        }
+        return dataKey;
+    }
+
 }
 

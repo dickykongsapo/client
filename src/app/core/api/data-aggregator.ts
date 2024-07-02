@@ -30,7 +30,7 @@ import {
 } from '@models/public-api';
 import { UtilsService } from '../services/utils.service';
 import { deepClone } from '../utils';
-import Timeout = NodeJS.Timeout;
+// import Timeout = NodeJS.Timeout;
 import * as moment_ from 'moment';
 
 export declare type onAggregatedData = (data: SubscriptionData, detectChanges: boolean) => void;
@@ -138,7 +138,7 @@ export class DataAggregator {
     private aggregationTimeout = Math.max(this.subsTw.aggregation.interval, 1000);
     private readonly aggFunction: AggFunction;
 
-    private intervalTimeoutHandle: Timeout;
+    private intervalTimeoutHandle: NodeJS.Timeout;
     private intervalScheduledTime: number;
 
     private startTs: number;

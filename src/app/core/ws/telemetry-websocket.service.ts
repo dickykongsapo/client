@@ -42,10 +42,11 @@ import { AppState } from '../core.state';
 import { AuthService } from '../services/auth.service';
 import { selectIsAuthenticated } from '../auth/auth.selectors';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import Timeout = NodeJS.Timeout;
+// import Timeout = NodeJS.Timeout;
 import { useStore } from 'react-redux';
 import { ActionNotificationShow } from '../notification/notification.actions';
 import { useDispatch } from 'react-redux';
+import { connect } from "react-redux";
 
 const RECONNECT_INTERVAL = 2000;
 const WS_IDLE_TIMEOUT = 90000;
@@ -58,8 +59,8 @@ export class TelemetryWebsocketService implements TelemetryService {
     isOpened = false;
     isReconnect = false;
 
-    socketCloseTimer: Timeout;
-    reconnectTimer: Timeout;
+    socketCloseTimer: NodeJS.Timeout;
+    reconnectTimer: NodeJS.Timeout;
 
     lastCmdId = 0;
     subscribersCount = 0;
@@ -70,14 +71,17 @@ export class TelemetryWebsocketService implements TelemetryService {
     cmdsWrapper = new TelemetryPluginCmdsWrapper();
     telemetryUri: string;
 
+
+    private store: Store<AppState> = useStore();
+    private state: AppState = this.store.getState();
+    private dispatch = useDispatch();
+
     dataStream: WebSocketSubject<TelemetryPluginCmdsWrapper | WebsocketDataMsg>;
     constructor(
         private authService: AuthService) {
 
-        const store: Store<AppState> = useStore();
-        const state: AppState = store.getState();
 
-        if (selectIsAuthenticated(state)) {
+        if (selectIsAuthenticated(this.state)) {
             this.reset(true)
         }
 
@@ -361,8 +365,7 @@ export class TelemetryWebsocketService implements TelemetryService {
         if (!message) {
             message += `WebSocket Error: error code - ${errorCode}.`;
         }
-        const dispatch = useDispatch();
-        dispatch(ActionNotificationShow(
+        this.dispatch(ActionNotificationShow(
             {
                 message, type: 'error'
             }

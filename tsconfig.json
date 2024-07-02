@@ -93,8 +93,13 @@
     "lib": [
       "es2018",
       "es2019",
-      "dom"
+      "dom",
+      "DOM",
+      "ESNext"
     ],
+    "types": [
+      "node"
+    ]
   },
   "typeRoots": [
     "node_modules/@types",

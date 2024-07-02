@@ -19,6 +19,7 @@ import { AuthService } from '@app/core/services/auth.service';
 import { connect, useStore } from "react-redux";
 import { ToastContainer } from 'react-toastify';
 import { deepClone, isDefined, isUndefined } from '@app/core/utils';
+import { AlarmCenter } from '@pages/alarm-center/alarm-center.component';
 
 const App = () => {
   const authService = new AuthService()
@@ -93,6 +94,7 @@ const App = () => {
               <Route path='/login' element={<LogInPage />} />
               <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
               <Route path='/customers' element={<ProtectedRoute><CustomersPage /></ProtectedRoute>} />
+              <Route path='/alarm-center' element={<ProtectedRoute><AlarmCenter></AlarmCenter></ProtectedRoute>} />
               <Route path='/ruleChains' element={<ProtectedRoute><RuleChainsPage /></ProtectedRoute>} />
               <Route path='/whiteLabel' element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
             </Routes>

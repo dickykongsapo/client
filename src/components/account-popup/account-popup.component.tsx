@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, CSSProperties } from 'react';
 import { Button, Paper } from '@mui/material';
 import '@components/account-popup/account-popup.styles.scss';
 import { selectAuthState, selectAuthUser } from '@app/core/auth/auth.selectors';
@@ -25,8 +25,33 @@ import { AuthService } from '@app/core/services/auth.service';
 import ThemedButton from '@components/button/button.component';
 import { Authority, AuthUser } from '@app/shared/public-api';
 import { useTranslation } from 'react-i18next';
+import { selectWhiteLabel } from '@app/core/white-label/white-label.selector';
+import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects'
+import ImageInput from "@components/image-input/image-input.component";
 
 
+const thumb: CSSProperties = {
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    padding: 4,
+    boxSizing: 'border-box'
+    // boxSizing: 'border-box'
+};
+
+const thumbInner: CSSProperties = {
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
+};
+
+const img: CSSProperties = {
+    display: 'block',
+    width: '100%',
+    height: '100%'
+};
 
 const AccountPopup = (props: { handleAccountPopupClose: () => void }
     // props: {
@@ -40,6 +65,7 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
     const [userName, setUserName] = useState('');
     const [userAuthority, setUserAuthority] = useState('');
     const [showLoginButton, setShowLoginButton] = useState(true)
+    const [icon, setIcon] = useState('')
     const { t, i18n } = useTranslation();
     const authService = new AuthService();
     const state: AppState = store.getState();
@@ -50,7 +76,9 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
 
     const auth = () => {
         const authuser = selectAuthUser(state)
+        const whiteLabel = selectWhiteLabel(state)
         if (authuser) {
+            setIcon(whiteLabel.logo)
             setUserName(authuser.sub)
             setUserAuthority(getAuthorityName(authuser))
             setShowLoginButton(false)
@@ -77,6 +105,21 @@ const AccountPopup = (props: { handleAccountPopupClose: () => void }
                 </div>
                 :
                 <div>
+                    {/* <ImageInput
+                        instruction={t('white-labeling.drop-logo-image')}
+                        size={4000000}
+
+                        name={'logo'} value={icon} /> */}
+                    <div style={thumb}>
+                        <div style={thumbInner}>
+
+                            <img
+                                src={icon}
+                                style={img}
+                            // Revoke data uri after image is loaded
+                            />
+                        </div>
+                    </div>
                     <div>{userName}</div>
                     <div>{t(userAuthority)}</div>
                     <ThemedButton onClick={clickLogoutButton} word={t('user.logout')} />

@@ -44,7 +44,7 @@ export class UserService {
         return from(axiosInstance.get<PageData<User>>(`/api/customer/${customerId}/users${pageLink.toQuery()}`)).pipe(map(axiosResponse => { return axiosResponse.data }))
     }
 
-    public getUser(userId: string, jwtToken: string): Observable<User> {
+    public getUser(userId: string): Observable<User> {
         // let data = authHeader();
         // console.log(data)
         return from(axiosInstance.get<User>(`/api/user/${userId}`)).pipe(map(axiosResponse => { return axiosResponse.data }));

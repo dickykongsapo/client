@@ -24,15 +24,16 @@ import { SettingsActionTypes } from './settings.actions';
 import { selectColorMode, selectUserLang } from './settings.selectors';
 import i18n from 'src/i18n';
 import { lang } from 'moment';
+import { WhiteLabel } from '@models/white-label.model';
 
 // Worker saga will be fired on USER_FETCH_REQUESTED actions
 function* setTheme(action) {
-    const whiteLabel = yield select(selectWhiteLabel)
+    const whiteLabel: WhiteLabel = yield select(selectWhiteLabel)
+    console.log(whiteLabel)
     const themeService = new ThemeService();
     const iconService = new IconService();
     if (whiteLabel) {
         // document.title = whiteLabel.title;
-
         whiteLabel.color ? themeService.changeTheme(whiteLabel.color) : themeService.changeTheme('#2397c5');
         whiteLabel.icon ? iconService.changeIcon(whiteLabel.icon) : iconService.changeIcon('thingsboard.ico')
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { FormatPaint, Home, SettingsEthernet, SupervisorAccount } from "@mui/icons-material";
+import { Alarm, FormatPaint, Home, SettingsEthernet, SupervisorAccount } from "@mui/icons-material";
 
 export const MENU_LIST = [
     {
@@ -39,5 +39,11 @@ export const MENU_LIST = [
         name: 'white-labeling.white-labeling',
         link: '/whiteLabel',
         icon: <FormatPaint />,
-    }
+    },
+    {
+        id: 'alarmCenter',
+        name: 'alarm.alarm-center',
+        link: '/alarm-center',
+        icon: <Alarm />,
+    },
 ]

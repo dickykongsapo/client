@@ -20,7 +20,7 @@ import { AliasFilterType, EntityFilters } from "@models/alias.models";
 import { EntityId } from "@models/id/entity-id";
 import { PageData } from "@models/page/page-data";
 import { DataKeyType, EntityInfo, EntityType } from "@models/public-api";
-import { Datasource, DatasourceType } from "@models/widget.models";
+import { DataKey, Datasource, DatasourceType } from "@models/widget.models";
 
 export enum EntityKeyType {
     ATTRIBUTE = 'ATTRIBUTE',
@@ -51,6 +51,15 @@ export function dataKeyTypeToEntityKeyType(dataKeyType: DataKeyType): EntityKeyT
             return EntityKeyType.COUNT;
     }
 }
+
+
+export function dataKeyToEntityKey(dataKey: DataKey): EntityKey {
+    return {
+        key: dataKey.name,
+        type: dataKeyTypeToEntityKeyType(dataKey.type)
+    };
+}
+
 
 export enum EntityKeyValueType {
     STRING = 'STRING',
@@ -363,3 +372,69 @@ export function updateDatasourceFromEntityInfo(datasource: Datasource, entity: E
         }
     }
 }
+
+export function filterInfoToKeyFilters(filter: FilterInfo): Array<KeyFilter> {
+    const keyFilterInfos = filter.keyFilters;
+    const keyFilters: Array<KeyFilter> = [];
+    for (const keyFilterInfo of keyFilterInfos) {
+        const key = keyFilterInfo.key;
+        for (const predicate of keyFilterInfo.predicates) {
+            const keyFilter: KeyFilter = {
+                key,
+                valueType: keyFilterInfo.valueType,
+                value: keyFilterInfo.value,
+                predicate: keyFilterPredicateInfoToKeyFilterPredicate(predicate)
+            };
+            keyFilters.push(keyFilter);
+        }
+    }
+    return keyFilters;
+}
+
+export function keyFilterPredicateInfoToKeyFilterPredicate(keyFilterPredicateInfo: KeyFilterPredicateInfo): KeyFilterPredicate {
+    let keyFilterPredicate = keyFilterPredicateInfo.keyFilterPredicate;
+    if (keyFilterPredicate.type === FilterPredicateType.COMPLEX) {
+        const complexInfo = keyFilterPredicate as ComplexFilterPredicateInfo;
+        const predicates = complexInfo.predicates.map((predicateInfo => keyFilterPredicateInfoToKeyFilterPredicate(predicateInfo)));
+        keyFilterPredicate = {
+            type: FilterPredicateType.COMPLEX,
+            operation: complexInfo.operation,
+            predicates
+        } as ComplexFilterPredicate;
+    }
+    return keyFilterPredicate;
+}
+
+
+export const singleEntityDataPageLink: EntityDataPageLink = createDefaultEntityDataPageLink(1);
+export const defaultEntityDataPageLink: EntityDataPageLink = createDefaultEntityDataPageLink(1024);
+
+export function createDefaultEntityDataPageLink(pageSize: number): EntityDataPageLink {
+    return {
+        pageSize,
+        page: 0,
+        sortOrder: {
+            key: {
+                type: EntityKeyType.ENTITY_FIELD,
+                key: 'createdTime'
+            },
+            direction: Direction.DESC
+        }
+    };
+}
+
+
+export const entityInfoFields: EntityKey[] = [
+    {
+        type: EntityKeyType.ENTITY_FIELD,
+        key: 'name'
+    },
+    {
+        type: EntityKeyType.ENTITY_FIELD,
+        key: 'label'
+    },
+    {
+        type: EntityKeyType.ENTITY_FIELD,
+        key: 'additionalInfo'
+    }
+];

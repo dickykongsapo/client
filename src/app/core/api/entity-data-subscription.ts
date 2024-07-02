@@ -44,7 +44,7 @@ import { NULL_UUID } from '@models/id/has-uuid';
 import { EntityType } from '@models/public-api';
 import { Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { EntityId } from '@models/id/entity-id';
-import Timeout = NodeJS.Timeout;
+// import Timeout = NodeJS.Timeout;
 
 declare type DataKeyFunction = (time: number, prevValue: any) => any;
 declare type DataKeyPostFunction = (time: number, value: any, prevValue: any, timePrev: number, prevOrigValue: any) => any;
@@ -106,7 +106,7 @@ export class EntityDataSubscription {
     private frequency: number;
     private tickScheduledTime = 0;
     private tickElapsed = 0;
-    private timer: Timeout;
+    private timer: NodeJS.Timeout;
 
     private dataResolved = false;
     private started = false;

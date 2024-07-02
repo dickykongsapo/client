@@ -129,8 +129,11 @@ export class AuthService {
 
   readonly logout = async (captureLastUrl: boolean = false) => {
     let user = deepClone(this.store.getState().auth.userDetails)
-    user.additionalInfo.lang = this.store.getState().settings.userLang
-    user.additionalInfo.colorMode = this.store.getState().settings.colorMode
+    if (user) {
+
+      user.additionalInfo.lang = this.store.getState().settings.userLang
+      user.additionalInfo.colorMode = this.store.getState().settings.colorMode
+    }
 
     //save user
     await this.userService.saveUser(user)
@@ -430,7 +433,7 @@ export class AuthService {
             }
           );
         } else if (authPayload.authUser.userId) {
-          this.userService.getUser(authPayload.authUser.userId, jwtToken).subscribe(
+          this.userService.getUser(authPayload.authUser.userId).subscribe(
             (user) => {
               authPayload.userDetails = user;
 
@@ -684,4 +687,5 @@ export class AuthService {
 
 
 }
+
 

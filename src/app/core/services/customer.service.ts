@@ -24,6 +24,11 @@ export class CustomerService {
     // private globalHttpInterceptor = new GlobalHttpInterceptor();
 
     public getCustomers(pageLink: PageLink): Observable<PageData<Customer>> {
-        return from(axiosInstance.get<PageData<Customer>>(`/api/customers/${pageLink.toQuery()}`)).pipe(map(axiosResponse => { return axiosResponse.data }));
+        return from(axiosInstance.get<PageData<Customer>>(`/api/customers/${pageLink.toQuery()}`))
+            .pipe(map(axiosResponse => { return axiosResponse.data }));
+    }
+    public getCustomer(customerId: string): Observable<Customer> {
+        return from(axiosInstance.get<Customer>(`/api/customer/${customerId}`))
+            .pipe(map(axiosResponse => { return axiosResponse.data }));
     }
 }

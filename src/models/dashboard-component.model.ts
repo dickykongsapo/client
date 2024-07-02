@@ -74,7 +74,10 @@ export interface IDashboardComponent {
     resetHighlight(): void;
     highlightWidget(widgetId: string, delay?: number);
     selectWidget(widgetId: string, delay?: number);
-    getSelectedWidget(): Widget;
+
+    //need change
+    getSelectedWidget(): void;
+
     getEventGridPosition(event: Event): WidgetPosition;
     notifyGridsterOptionsChanged();
     pauseChangeNotifications();
