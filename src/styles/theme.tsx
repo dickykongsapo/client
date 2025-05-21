@@ -21,7 +21,7 @@ import { connect } from "react-redux";
 const GlobalTheme = (props) => {
     const { colorMode, whiteLabelColor } = props
     console.log(colorMode)
-
+    console.log(whiteLabelColor)
     return <ThemeProvider
         theme={
             createTheme({

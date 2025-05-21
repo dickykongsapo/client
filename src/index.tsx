@@ -29,9 +29,9 @@ root.render(
     {/* <ThemeProvider theme={theme}> */}
     <BrowserRouter>
       <AxiosInterceptor>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
+        {/* <React.StrictMode> */}
+        <App />
+        {/* </React.StrictMode> */}
       </AxiosInterceptor>
     </BrowserRouter>
     {/* </ThemeProvider> */}

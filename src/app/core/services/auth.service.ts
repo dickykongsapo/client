@@ -469,7 +469,13 @@ export class AuthService {
                   if (sysParams.whiteLabel && authPayload.userDetails.authority !== Authority.SYS_ADMIN) {
                     whiteLabel = sysParams.whiteLabel;
                   } else {
-                    whiteLabel = null;
+                    whiteLabel = {
+                      title: '',
+                      logo: '',
+                      icon: '',
+                      color: '#2397c5',
+                      height: 0
+                    };
                   }
 
                   this.notifyUserLang(userLang);

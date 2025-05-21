@@ -9,7 +9,7 @@ import HomePage from '@pages/home/home-page.component';
 import CustomersPage from '@pages/customers/customers-page.component';
 import RuleChainsPage from '@pages/rule-chains/rule-chains-page.component';
 import LogInPage from '@pages/sign-in/sign-in-page.component';
-import { ProtectedRoute } from '@app/core/guards/auth.guard';
+import ProtectedRoute from '@app/core/guards/auth.guard';
 import GlobalTheme from '@styles/theme';
 import WhiteLabelPage from '@pages/white-label/white-label-page.component';
 // import { AuthService } from './services/auth.service';
@@ -91,12 +91,22 @@ const App = () => {
           <div style={{ marginTop: '64px' }}>
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
-              <Route path='/login' element={<LogInPage />} />
-              <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+              <Route path='/login' element={<LogInPage />} />'
+
+
+              <Route element={<ProtectedRoute />}>
+                <Route path='/home' element={<HomePage />} />
+                <Route path='/customers' element={<CustomersPage />} />
+                <Route path='/alarm-center' element={<AlarmCenter />} />
+                <Route path='/ruleChains' element={<RuleChainsPage />} />
+                <Route path='/whiteLabel' element={<WhiteLabelPage />} />
+
+              </Route>
+              {/* <Route path='/home' element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
               <Route path='/customers' element={<ProtectedRoute><CustomersPage /></ProtectedRoute>} />
-              <Route path='/alarm-center' element={<ProtectedRoute><AlarmCenter></AlarmCenter></ProtectedRoute>} />
+              <Route path='/alarm-center' element={<ProtectedRoute><AlarmCenter /></ProtectedRoute>} />
               <Route path='/ruleChains' element={<ProtectedRoute><RuleChainsPage /></ProtectedRoute>} />
-              <Route path='/whiteLabel' element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
+              <Route path='/whiteLabel' element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} /> */}
             </Routes>
 
           </div>

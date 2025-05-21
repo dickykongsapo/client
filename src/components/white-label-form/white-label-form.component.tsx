@@ -15,7 +15,7 @@
  */
 import { Box, Button, FormControl, FormControlLabel, FormHelperText, FormLabel, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { Store } from "@reduxjs/toolkit";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useStore } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { AppState } from "@app/core/core.state";
@@ -49,7 +49,7 @@ const WhiteLabelForm = () => {
     const notify = (message: string) => toast.success(message);
     const { t, i18n } = useTranslation();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (whiteLabel) {
             setFormFields({
                 title: whiteLabel.title,
@@ -90,9 +90,12 @@ const WhiteLabelForm = () => {
                     icon: values.icon,
                     color: values.color
                 }
-                await whiteLabelService.setWhiteLabel(whiteLabel, authUser.tenantId).subscribe((whiteLabel) => {
+                dispatch(ActionLoadWhiteLabel(whiteLabel))
 
-                    dispatch(ActionLoadWhiteLabel(whiteLabel))
+                await whiteLabelService.setWhiteLabel(whiteLabel, authUser.tenantId).subscribe((whiteLabel) => {
+                    console.log('api')
+                    console.log(whiteLabel)
+                    // dispatch(ActionLoadWhiteLabel(whiteLabel))
                     setFormFields(values)
                     notify(t('event.success'))
 

@@ -16,24 +16,47 @@
 import { Store } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { Navigate, Route, useNavigate } from 'react-router-dom';
+import { Navigate, Route, useNavigate, Outlet } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { AppState } from '../core.state';
-export const ProtectedRoute = ({ children }) => {
+// const ProtectedRoute = ({ children }) => {
+//     const store: Store<AppState> = useStore();
+//     const state: AppState = store.getState();
+//     const isAuthenticated = state.auth.isAuthenticated
+//     useEffect(() => {
+//         console.log(isAuthenticated)
+
+//     }, [])
+//     if (!isAuthenticated) {
+//         return (
+//             <Navigate to="/login" />
+//         )
+//     }
+//     return children;
+// };
+
+
+const ProtectedRoute = () => {
     const store: Store<AppState> = useStore();
     const state: AppState = store.getState();
     const isAuthenticated = state.auth.isAuthenticated
+    const notify = (message: string) => toast.warn(message);
     useEffect(() => {
         console.log(isAuthenticated)
-
+        if (!isAuthenticated) {
+            notify('Login la diu')
+        }
     }, [])
-    if (!isAuthenticated) {
-        return (
-            <Navigate to="/login" />
-        )
-    }
-    return children;
+    return isAuthenticated ? (
+        <Outlet />
+    ) : (
+        <Navigate to="/login" />
+    );
 };
+
+export default ProtectedRoute;
+
 
 
 
